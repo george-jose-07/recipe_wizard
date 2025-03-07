@@ -37,7 +37,6 @@ class _HomePageState extends State<HomePage> {
   String selectedCuisine = '';
   final List<String> _selectedIngredients = [];
   final List<String> _dietaryRestrictions = [];
-  final TextEditingController _additional = TextEditingController();
   String _addition = '';
   final ImagePicker _picker = ImagePicker();
 
@@ -73,7 +72,6 @@ class _HomePageState extends State<HomePage> {
       _loading = true;
       _errorMessage = '';
     });
-    _addition = _additional.text;
     print(_addition);
     final prompt = TextPart(
         """Recommend a recipeResponse for me based on the provided image.
@@ -85,8 +83,6 @@ I'm in the mood for the following types of cuisine: $selectedCuisine
 I have the following dietary restrictions: $_dietaryRestrictions
 
 Optionally also include the following ingredients: $_selectedIngredients
-
-Additionally include the following details: $_addition
 
 after providing the recipeResponse, explain creatively why the recipeResponse is good based on only the ingredients used in the recipeResponse. Tell a short story of a travel experience that inspired the recipeResponse.
 Provide a summary of how many people the recipeResponse will serve and the nutritional information per serving.
@@ -187,6 +183,8 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -228,7 +226,11 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
                                       color: Colors.transparent,
-                                      border: Border.all(color: Colors.black),
+                                      border: Border.all(
+                                        color: isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
@@ -255,7 +257,11 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
                                       color: Colors.transparent,
-                                      border: Border.all(color: Colors.black),
+                                      border: Border.all(
+                                        color: isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                     height: 60,
                                     child: Center(
@@ -278,7 +284,9 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.transparent,
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
                     image: DecorationImage(
                       image: _image != null
                           ? FileImage(_image!)
@@ -297,7 +305,9 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.transparent,
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10),
@@ -326,7 +336,8 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                               FilterChip(
                                 label: Text(filter),
                                 side: BorderSide(
-                                  color: Colors.black,
+                                  color:
+                                      isDarkMode ? Colors.white : Colors.black,
                                   style: BorderStyle.solid,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -336,7 +347,8 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                                 selectedColor: Colors.green,
                                 elevation: 10,
                                 showCheckmark: true,
-                                checkmarkColor: Colors.black,
+                                checkmarkColor:
+                                    isDarkMode ? Colors.white : Colors.black,
                                 selected: _selectedIngredients.contains(filter),
                                 onSelected: (bool selected) {
                                   setState(() {
@@ -363,7 +375,9 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -385,13 +399,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('Italian'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -405,13 +420,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('Indian'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -425,13 +441,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('Chinese'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -445,13 +462,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('French'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -465,13 +483,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('Arabic'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -485,13 +504,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('English'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -505,13 +525,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('Korean'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -525,13 +546,14 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           ChoiceChip(
                             label: Text('Mexican'),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -556,7 +578,9 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -591,7 +615,7 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                           FilterChip(
                             label: Text(filter),
                             side: BorderSide(
-                              color: Colors.black,
+                              color: isDarkMode ? Colors.white : Colors.black,
                               style: BorderStyle.solid,
                             ),
                             shape: RoundedRectangleBorder(
@@ -600,7 +624,8 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                             backgroundColor: Colors.transparent,
                             selectedColor: Colors.green,
                             showCheckmark: true,
-                            checkmarkColor: Colors.black,
+                            checkmarkColor:
+                                isDarkMode ? Colors.white : Colors.black,
                             selected: _dietaryRestrictions.contains(filter),
                             onSelected: (bool selected) {
                               setState(() {
@@ -613,44 +638,6 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                             },
                           ),
                       ]),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ADDITIONAL DETAILS',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: Colors.black)),
-                          hintText: 'Enter additional details',
-                          hintStyle: TextStyle(fontSize: 15),
-                        ),
-                        controller: _additional,
-                      ),
                     ],
                   ),
                 ),
@@ -673,7 +660,9 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.green,
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(15),

@@ -13,6 +13,8 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,7 +40,9 @@ class _ResultPageState extends State<ResultPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Center(
                   child: Padding(
@@ -59,7 +63,9 @@ class _ResultPageState extends State<ResultPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +97,9 @@ class _ResultPageState extends State<ResultPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.transparent,
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
                     ),
                     height: 60,
                     width: MediaQuery.of(context).size.width / 2 - 30,
@@ -119,7 +127,9 @@ class _ResultPageState extends State<ResultPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.transparent,
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                      ),
                     ),
                     height: 60,
                     width: MediaQuery.of(context).size.width / 2 - 30,
@@ -149,7 +159,9 @@ class _ResultPageState extends State<ResultPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -185,7 +197,9 @@ class _ResultPageState extends State<ResultPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -214,7 +228,9 @@ class _ResultPageState extends State<ResultPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.transparent,
-                  border: Border.all(color: Colors.black),
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Padding(
                     padding: const EdgeInsets.all(10),
