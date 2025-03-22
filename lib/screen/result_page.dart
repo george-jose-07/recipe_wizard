@@ -1,16 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:recipe_wizard1/model/recipe_model.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({required this.recipe, super.key});
 
-  final Recipe recipe;
+  final RecipeModel recipe;
 
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
+  late RecipeModel _recipe;
+
+  @override
+  void initState() {
+    super.initState();
+    _recipe = widget.recipe;
+  }
+
+  void _toggleFavorite() async {
+    var box2 = await Hive.openBox<RecipeModel>('recipe_box');
+    _recipe = RecipeModel(
+      title: _recipe.title,
+      ingredients: _recipe.ingredients,
+      instructions: _recipe.instructions,
+      fav: !_recipe.fav,
+      description: _recipe.description,
+      allergens: _recipe.allergens,
+      servings: _recipe.servings,
+      id: _recipe.id,
+    );
+    box2.put(_recipe.id, _recipe);
+    setState(() {});
+  }
+
+  // void onRemoveFav(RecipeModel favorites) async {
+  //   final recipeIndex = _favRecipe.indexOf(favorites);
+  //   var box1 = await Hive.openBox<RecipeModel>('recipe_box');
+  //   setState(() {
+  //     _favRecipe.remove(favorites);
+  //     box1.put(favorites.id, favorites);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode =
@@ -102,20 +137,14 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ),
                     height: 60,
-                    width: MediaQuery.of(context).size.width / 2 - 30,
+                    width: 60,
                     child: Padding(
                       padding: const EdgeInsets.all(5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'CUISINE TYPE:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                          Text(widget.recipe.cuisine)
-                        ],
+                      child: IconButton(
+                        onPressed: _toggleFavorite,
+                        icon: Icon(
+                          _recipe.fav ? Icons.favorite : Icons.favorite_border,
+                        ),
                       ),
                     ),
                   ),
@@ -132,7 +161,7 @@ class _ResultPageState extends State<ResultPage> {
                       ),
                     ),
                     height: 60,
-                    width: MediaQuery.of(context).size.width / 2 - 30,
+                    width: MediaQuery.of(context).size.width - 120,
                     child: Padding(
                       padding: const EdgeInsets.all(5),
                       child: Column(

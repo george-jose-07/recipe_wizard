@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:recipe_wizard1/model/recipe_model.dart';
 import 'package:recipe_wizard1/screen/homepage.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
@@ -17,6 +23,11 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 );
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(RecipeModelAdapter());
+  await Hive.openBox<RecipeModel>("recipe_box");
   runApp(const MyApp());
 }
 

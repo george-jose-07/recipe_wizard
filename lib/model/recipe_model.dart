@@ -1,12 +1,35 @@
-class Recipe {
-  final String title;
-  final List<String> ingredients;
-  final List<String> instructions;
-  final String id;
-  final String cuisine;
-  final String description;
-  final List<String> allergens;
-  final String servings;
+import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
+
+part 'recipe_model.g.dart';
+
+const uuid = Uuid();
+
+@HiveType(typeId: 0)
+class RecipeModel extends HiveObject {
+  @HiveField(0)
+  String title;
+
+  @HiveField(1)
+  List<String> ingredients;
+
+  @HiveField(2)
+  List<String> instructions;
+
+  @HiveField(3)
+  String id;
+
+  @HiveField(4)
+  final bool fav;
+
+  @HiveField(5)
+  String description;
+
+  @HiveField(6)
+  List<String> allergens;
+
+  @HiveField(7)
+  String servings;
 
   // final String totalFat;
   // final String carbohydrates;
@@ -15,16 +38,15 @@ class Recipe {
 
   //final Map<String, String> nutritionInformation;
 
-  Recipe({
+  RecipeModel({
     required this.title,
     required this.ingredients,
     required this.instructions,
-    required this.id,
-    required this.cuisine,
+    this.fav = false,
     required this.description,
     required this.allergens,
     required this.servings,
-    // required this.calories,
+    required this.id,
     // required this.carbohydrates,
     // required this.totalFat,
     // required this.totalProtein
