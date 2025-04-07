@@ -1,16 +1,22 @@
-# recipe_wizard1
+# Recipe Wizard
 
-A new Flutter project.
+**Recipe Wizard** is an AI-powered recipe generator app that helps users create personalized recipes using image recognition and ingredient inputs. Designed for home cooks, it simplifies meal planning by considering available ingredients, dietary preferences, and cuisine styles.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Ingredient Image Recognition**: Upload photos of ingredients and let the AI identify them.
+- **Custom Filters**: Select additional staples like salt, oil, or sugar.
+- **Cuisine Preferences**: Choose from styles like Italian, Korean, Arabic, French, and more.
+- **Dietary Restrictions**: Support for vegetarian, vegan, gluten-free, and more.
+- **Recipe Generation**: Get ingredient measurements, cooking instructions, and dish descriptions.
+- **History and Favorites**: Automatically saves generated recipes using Hive for easy access and bookmarking.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tech Stack
+
+- **Flutter**: UI development
+- **Gemini API**: AI model for recipe generation
+- **Hive**: Local database for storing recipe history and favorites
