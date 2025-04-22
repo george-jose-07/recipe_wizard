@@ -23,7 +23,7 @@ class NewRecipe extends StatefulWidget {
 class _NewRecipeState extends State<NewRecipe> {
   late final GenerativeModel _model;
   String generatedText = '';
-  String apikey = 'AIzaSyBomlERxZuAQTve5bekPwlfE7NpkbKFQoI';
+  String apikey = 'your api key';
   bool _loading = false;
   String _errorMessage = '';
   File? _image;
