@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -273,20 +275,70 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                   },
                 );
               },
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.transparent,
-                  border: Border.all(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                  image: DecorationImage(
-                    image: _image != null
-                        ? FileImage(_image!)
-                        : AssetImage('assets/images/no_pic.jpg'),
-                  ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                  child: _image != null
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.transparent,
+                            border: Border.all(
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
+                            image: DecorationImage(
+                              image: FileImage(_image!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: isDarkMode
+                                ? Colors.black.withOpacity(0.25)
+                                : Colors.white.withOpacity(0.25),
+                            border: Border.all(
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image_outlined,
+                                size: 160,
+                                color: isDarkMode
+                                    ? Colors.white.withOpacity(0.7)
+                                    : Colors.black.withOpacity(0.5),
+                              ),
+                              Text(
+                                'NO IMAGE AVAILABLE',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: isDarkMode
+                                      ? Colors.white.withOpacity(0.7)
+                                      : Colors.black.withOpacity(0.5),
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                          .animate(
+                            onPlay: (controller) => controller.repeat(),
+                          )
+                          .shimmer(
+                            duration: 3000.ms,
+                            delay: 1000.ms,
+                            color: Color(0xffb6fbff).withOpacity(0.5),
+                          ),
                 ),
               ),
             ),
@@ -295,11 +347,105 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
-                Container(
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: isDarkMode
+                            ? Colors.black.withOpacity(0.25)
+                            : Colors.white.withOpacity(0.25),
+                        border: Border.all(
+                          color: isDarkMode ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'ADDITIONAL INGREDIENTS',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Wrap(runSpacing: 8, spacing: 8, children: [
+                              for (String filter in [
+                                'salt',
+                                'sugar',
+                                'milk',
+                                'oil',
+                                'rice flour',
+                                'pepper',
+                                'egg',
+                                'olive oil'
+                              ])
+                                FilterChip(
+                                  label: Text(filter),
+                                  side: BorderSide(
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    style: BorderStyle.solid,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  selectedColor: Colors.green,
+                                  elevation: 10,
+                                  showCheckmark: true,
+                                  checkmarkColor:
+                                      isDarkMode ? Colors.white : Colors.black,
+                                  selected:
+                                      _selectedIngredients.contains(filter),
+                                  onSelected: (bool selected) {
+                                    setState(() {
+                                      if (selected) {
+                                        _selectedIngredients.add(filter);
+                                      } else {
+                                        _selectedIngredients.remove(filter);
+                                      }
+                                    });
+                                  },
+                                ),
+                            ]),
+                          ],
+                        ),
+                      ),
+                    )
+                        .animate(
+                          onPlay: (controller) => controller.repeat(),
+                        )
+                        .shimmer(
+                          duration: 3000.ms,
+                          delay: 1000.ms,
+                          color: Color(0xffb6fbff).withOpacity(0.5),
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Colors.transparent,
+                    color: isDarkMode
+                        ? Colors.black.withOpacity(0.25)
+                        : Colors.white.withOpacity(0.25),
                     border: Border.all(
                       color: isDarkMode ? Colors.white : Colors.black,
                     ),
@@ -310,23 +456,250 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'ADDITIONAL INGREDIENTS',
+                          'CUISINE STYLE',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         SizedBox(
                           height: 10,
                         ),
+                        Wrap(
+                          runSpacing: 8,
+                          spacing: 8,
+                          children: [
+                            ChoiceChip(
+                              label: Text('Italian'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'Italian',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'Italian' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('Indian'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'Indian',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'Indian' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('Chinese'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'Chinese',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'Chinese' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('French'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'French',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'French' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('Arabic'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'Arabic',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'Arabic' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('English'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'English',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'English' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('Korean'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'Korean',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'Korean' : '';
+                                });
+                              },
+                            ),
+                            ChoiceChip(
+                              label: Text('Mexican'),
+                              side: BorderSide(
+                                color: isDarkMode ? Colors.white : Colors.black,
+                                style: BorderStyle.solid,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              selectedColor: Colors.green,
+                              showCheckmark: true,
+                              checkmarkColor:
+                                  isDarkMode ? Colors.white : Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              selected: selectedCuisine == 'Mexican',
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  selectedCuisine = selected ? 'Mexican' : '';
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                    .animate(
+                      onPlay: (controller) => controller.repeat(),
+                    )
+                    .shimmer(
+                      duration: 3000.ms,
+                      delay: 1000.ms,
+                      color: Color(0xffb6fbff).withOpacity(0.5),
+                    ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: isDarkMode
+                        ? Colors.black.withOpacity(0.25)
+                        : Colors.white.withOpacity(0.25),
+                    border: Border.all(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'DIETARY RESTRICTIONS',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Wrap(runSpacing: 8, spacing: 8, children: [
                           for (String filter in [
-                            'salt',
-                            'sugar',
-                            'milk',
-                            'oil',
-                            'rice flour',
-                            'pepper',
-                            'egg',
-                            'olive oil'
+                            'Vegetarianism',
+                            'Veganism',
+                            'Lactose Intolerance',
+                            'Gluten Intolerance',
+                            'Nuts',
+                            'Kosher',
+                            'Diabetes',
+                            'Keto',
+                            'Dairy-free',
+                            'Low carb',
+                            'Fish and shellfish',
+                            'Eggs',
+                            'Soy',
+                            'Wheat'
                           ])
                             FilterChip(
                               label: Text(filter),
@@ -339,17 +712,16 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                               ),
                               backgroundColor: Colors.transparent,
                               selectedColor: Colors.green,
-                              elevation: 10,
                               showCheckmark: true,
                               checkmarkColor:
                                   isDarkMode ? Colors.white : Colors.black,
-                              selected: _selectedIngredients.contains(filter),
+                              selected: _dietaryRestrictions.contains(filter),
                               onSelected: (bool selected) {
                                 setState(() {
                                   if (selected) {
-                                    _selectedIngredients.add(filter);
+                                    _dietaryRestrictions.add(filter);
                                   } else {
-                                    _selectedIngredients.remove(filter);
+                                    _dietaryRestrictions.remove(filter);
                                   }
                                 });
                               },
@@ -358,282 +730,15 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.transparent,
-                border: Border.all(
-                  color: isDarkMode ? Colors.white : Colors.black,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'CUISINE STYLE',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                )
+                    .animate(
+                      onPlay: (controller) => controller.repeat(),
+                    )
+                    .shimmer(
+                      duration: 3000.ms,
+                      delay: 1000.ms,
+                      color: Color(0xffb6fbff).withOpacity(0.5),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Wrap(
-                      runSpacing: 8,
-                      spacing: 8,
-                      children: [
-                        ChoiceChip(
-                          label: Text('Italian'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'Italian',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'Italian' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('Indian'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'Indian',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'Indian' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('Chinese'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'Chinese',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'Chinese' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('French'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'French',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'French' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('Arabic'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'Arabic',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'Arabic' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('English'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'English',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'English' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('Korean'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'Korean',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'Korean' : '';
-                            });
-                          },
-                        ),
-                        ChoiceChip(
-                          label: Text('Mexican'),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          selected: selectedCuisine == 'Mexican',
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedCuisine = selected ? 'Mexican' : '';
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.transparent,
-                border: Border.all(
-                  color: isDarkMode ? Colors.white : Colors.black,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'DIETARY RESTRICTIONS',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Wrap(runSpacing: 8, spacing: 8, children: [
-                      for (String filter in [
-                        'Vegetarianism',
-                        'Veganism',
-                        'Lactose Intolerance',
-                        'Gluten Intolerance',
-                        'Nuts',
-                        'Kosher',
-                        'Diabetes',
-                        'Keto',
-                        'Dairy-free',
-                        'Low carb',
-                        'Fish and shellfish',
-                        'Eggs',
-                        'Soy',
-                        'Wheat'
-                      ])
-                        FilterChip(
-                          label: Text(filter),
-                          side: BorderSide(
-                            color: isDarkMode ? Colors.white : Colors.black,
-                            style: BorderStyle.solid,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          backgroundColor: Colors.transparent,
-                          selectedColor: Colors.green,
-                          showCheckmark: true,
-                          checkmarkColor:
-                              isDarkMode ? Colors.white : Colors.black,
-                          selected: _dietaryRestrictions.contains(filter),
-                          onSelected: (bool selected) {
-                            setState(() {
-                              if (selected) {
-                                _dietaryRestrictions.add(filter);
-                              } else {
-                                _dietaryRestrictions.remove(filter);
-                              }
-                            });
-                          },
-                        ),
-                    ]),
-                  ],
-                ),
               ),
             ),
           ),
@@ -675,8 +780,19 @@ Return the recipeResponse in JSON format only. Do not include any other text."""
                     ),
                   ),
                 ),
-              ),
+              )
+                  .animate(
+                    onPlay: (controller) => controller.repeat(),
+                  )
+                  .shimmer(
+                    duration: 3000.ms,
+                    delay: 1000.ms,
+                    color: Color(0xffb6fbff).withOpacity(0.5),
+                  ),
             ),
+          ),
+          SizedBox(
+            height: 10,
           )
         ],
       ),

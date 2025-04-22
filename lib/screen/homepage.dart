@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import 'package:hive/hive.dart';
 
@@ -15,19 +16,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
   List<RecipeModel> _recipeHistory = [];
 
   getRecipe() async {
     var box = await Hive.openBox<RecipeModel>('recipe_box');
     setState(() {
-      _recipeHistory = box.values.toList();
+      final List<RecipeModel> recipes = box.values.toList();
+
+      for (final recipe in recipes) {
+        if (!_recipeHistory.any((r) => r.id == recipe.id)) {
+          _recipeHistory.add(recipe);
+        }
+      }
     });
   }
 
   @override
   void initState() {
-    getRecipe();
+    setState(() {
+      getRecipe();
+    });
     super.initState();
   }
 
@@ -42,13 +50,15 @@ class _HomePageState extends State<HomePage> {
   void _removeRecipe(RecipeModel recipe) async {
     final recipeIndex = _recipeHistory.indexOf(recipe);
     var box = await Hive.openBox<RecipeModel>('recipe_box');
+    final _recipe = box.values.toList();
+    final recipeI = _recipe.indexOf(recipe);
     setState(() {
-      box.delete(recipe.id);
+      box.deleteAt(recipeI);
       _recipeHistory.removeAt(recipeIndex);
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Removed from favorites'),
+        content: Text('Removed from history'),
       ),
     );
   }
@@ -59,18 +69,31 @@ class _HomePageState extends State<HomePage> {
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            'RECIPE WIZARD',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
+        title:
+            Text('RECIPE WIZARD', style: TextStyle(fontWeight: FontWeight.bold))
+                .animate(
+                  onPlay: (controller) => controller.repeat(),
+                )
+                .shimmer(
+                  duration: 3000.ms,
+                  delay: 1000.ms,
+                  color: Color(0xffb6fbff).withOpacity(0.7),
+                ),
       ),
       drawer: MainDrawer(
         history: _recipeHistory,
         onRemoveRecipe: _removeRecipe,
       ),
-      body: NewRecipe(onAddRecipe: _addRecipe),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.cover,
+              invertColors: isDarkMode ? false : true,
+              opacity: 0.7),
+        ),
+        child: NewRecipe(onAddRecipe: _addRecipe),
+      ),
     );
   }
 }

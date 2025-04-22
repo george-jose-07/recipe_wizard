@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:recipe_wizard1/model/recipe_model.dart';
@@ -33,28 +36,65 @@ class _FavouriteRecipeState extends State<FavouriteRecipe> {
             return const Center(child: Text('No favorite recipes yet.'));
           }
 
-          return ListView.builder(
-            itemCount: favoriteRecipes.length,
-            itemBuilder: (context, index) {
-              final recipe = favoriteRecipes[index];
-              return ListTile(
-                title: Text(recipe.title),
-                trailing: IconButton(
-                  icon: const Icon(Icons.favorite_border, color: Colors.red),
-                  onPressed: () {
-                    _removeFavorite(context, recipe);
-                  },
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ResultPage(recipe: recipe),
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/background.jpg'),
+                  fit: BoxFit.cover,
+                  invertColors: isDarkMode ? false : true,
+                  opacity: 0.7),
+            ),
+            child: ListView.builder(
+              itemCount: favoriteRecipes.length,
+              itemBuilder: (context, index) {
+                final recipe = favoriteRecipes[index];
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                      child: Card(
+                        color: Colors.white.withOpacity(0.1),
+                        child: ListTile(
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            recipe.title,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.favorite_border,
+                                color: Colors.red),
+                            onPressed: () {
+                              _removeFavorite(context, recipe);
+                            },
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ResultPage(recipe: recipe),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                          .animate(
+                            onPlay: (controller) => controller.repeat(),
+                          )
+                          .shimmer(
+                            duration: 3000.ms,
+                            delay: 1000.ms,
+                            color: Color(0xffb6fbff).withOpacity(0.5),
+                          ),
                     ),
-                  );
-                },
-              );
-            },
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

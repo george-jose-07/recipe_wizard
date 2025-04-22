@@ -1,0 +1,2 @@
+C:/Users/MY PC/StudioProjects/recipe_wizard1/android/app/.cxx/RelWithDebInfo/34bx501e/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/MY PC/StudioProjects/recipe_wizard1/android/app/.cxx/RelWithDebInfo/34bx501e/x86_64/CMakeFiles/rebuild_cache.dir
